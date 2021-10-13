@@ -25,12 +25,16 @@ def transition(state: list, person_1: int = -1, person_2: int = -1) -> list:
 
             state[person] = state[0]
 
-    return [transition for transition in state]
+    return state
 
 
 def validate_transition(state: list, person_1: int = -1, person_2: int = -1) -> bool:
 
-    if state[person_1] != state[0] or state[person_2] != state[0] or state[person_1] != state[person_2]:
+    if (
+        state[person_1] != state[0]
+        or state[person_2] != state[0]
+        or state[person_1] != state[person_2]
+    ):
         return False
 
     if state[0] == 1:
@@ -47,7 +51,7 @@ def validate_transition(state: list, person_1: int = -1, person_2: int = -1) -> 
     protected = 0
     for person in [person_1, person_2]:
         if not (person == -1) and person % 2 == 1:
-            if state[person+1] == state[0]:
+            if state[person + 1] == state[0]:
 
                 protected = 1
             for male in range(2, len(state), 2):
@@ -58,34 +62,36 @@ def validate_transition(state: list, person_1: int = -1, person_2: int = -1) -> 
     return True
 
 
-def backtraking(state, visited_states, i, j):
+def backtracking(state, visited_states, i, j):
     if is_final_state(state):
         print("Final state!")
+        visited_states.append(hash_state(state))
         print(visited_states)
         return True
-    elif visited_state(state, visited_states):
-        # print("Not final")
-        return False
+    # elif visited_state(state, visited_states):
+    #     return False
     else:
-        visited_states.append(hash_state(state))
+        if not hash_state(state) in visited_states:
+            visited_states.append(hash_state(state))
         for index_1 in range(1, len(state)):
             for index_2 in range(1, len(state)):
-                # print(index_1, index_2)
                 state_copy = state.copy()
-                if validate_transition(state_copy, index_1, index_2) and not visited_state(state_copy, visited_states):
+                if validate_transition(state_copy, index_1, index_2):
+                    # print(f"State: {state}")
                     new_state = list(transition(state, index_1, index_2))
-                    print(new_state)
-                    backtraking(new_state, visited_states, index_1 , index_2)
-                    if hash_state(new_state) in visited_states:
-                        visited_states.remove(hash_state(new_state)) # delete new_state from visited_states
+                    # print(f"New state: {new_state}")
+                    if not hash_state(state) in visited_states:
+                        backtracking(new_state, visited_states, index_1, index_2)
+                        # print(state_copy, visited_states)
+        visited_states.remove(visited_states[-1])
 
 
 def hash_state(state):
     str_state = ""
     for i in state:
         str_state += str(i)
-    hash_state = hashlib.md5(str_state.encode()).hexdigest()
-    return hash_state
+    # hash_state = hashlib.md5(str_state.encode()).hexdigest()
+    return str_state
 
 
 def visited_state(state: list, visited_states) -> bool:
@@ -98,10 +104,11 @@ def visited_state(state: list, visited_states) -> bool:
 def bkt_strategy(number_of_couples: int):
     state = get_initial_state(number_of_couples)
 
-    return backtraking(state, [], 1, 1)
-
+    return backtracking(state, [], 1, 1)
 
     # TESTING FUNCTIONS
+
+
 # print(get_initial_state(5))             # should print inistial state list
 
 # print(is_final_state([2, 1, 2, 2, 2]))  # should print False
