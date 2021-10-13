@@ -31,6 +31,9 @@ def transition(state: list, person_1: int = -1, person_2: int = -1) -> list:
 
 def validate_transition(state: list, person_1: int = -1, person_2: int = -1) -> bool:
 
+    if state[person_1] != state[0] or state[person_2] != state[0] or state[person_1] != state[person_2]:
+        return False
+
     if state[0] == 1:
 
         state[0] = 2
@@ -38,13 +41,13 @@ def validate_transition(state: list, person_1: int = -1, person_2: int = -1) -> 
         state[0] = 1
 
     for person in [person_1, person_2]:
-        if not person == -1 and person % 2 == 0:
+        if not (person == -1) and person % 2 == 0:
 
             state[person] = state[0]
 
     protected = 0
     for person in [person_1, person_2]:
-        if not person == -1 and person % 2 == 1:
+        if not (person == -1) and person % 2 == 1:
             if state[person+1] == state[0]:
 
                 protected = 1
@@ -57,29 +60,34 @@ def validate_transition(state: list, person_1: int = -1, person_2: int = -1) -> 
 
 
 def backtraking(state, visited_states, i, j):
-    ppl = []
-    for i in range(1, len(state)):
-        if state[i] == state[0]:
-            ppl.append(i)
-    ppl.append(-1)
-    # print(ppl)
+    # ppl = []
+    # for k in range(1, len(state)):
+    #     if state[k] == state[0]:
+    #         ppl.append(k)
+    # ppl.append(-1)
+    # # print(ppl)
 
     if is_final_state(state):
+        print("salut")
         return True
     elif visited_state(state, visited_states):
         return False
     else:
-        visited_states.append(state)
         # print(visited_states)
-        # for index_1 in range(i, len(ppl)):
-        #     for index_2 in range(j, len(ppl)):
-                # print(index_1, index_2)
-        state_2 = state.copy()
-        if validate_transition(state_2, 3, 4):
-            new_state = list(transition(state, 3, 4))
-            print(new_state)
-            # print(transition(state, 3, 4))
-            # backtraking(new_state, visited_states, index_1, index_2)
+        visited_states.append(hash_state(state))
+        for index_1 in range(1, len(state)):
+            for index_2 in range(1, len(state)):
+                print(index_1, index_2)
+                state_2 = state.copy()
+                state_3 = state.copy()
+                if validate_transition(state_2, index_1, index_2) and not visited_state(state_2, visited_states):
+                    new_state = list(transition(state, index_1, index_2))
+                    print(new_state)
+                    backtraking(new_state, visited_states, index_1 , index_2)
+                    # index_1 = i
+                    # index_2 = j
+                    visited_states.append(hash_state(new_state))
+                    state = new_state.copy()
 
 
 def hash_state(state):
@@ -138,8 +146,11 @@ def bkt_strategy(number_of_couples: int):
 # print(transition([2, 1, 2, 2, 2], 3))
 # print(validate_transition(get_initial_state(5), 2, 1))  # true
 # print(validate_transition([1,1,2,1,1], 4, 1))           # husband is on the future side and the female wants to get on the side with another male (true)
-# print(validate_transition([1,1,1,1,1], 4, 1))           # female wants to get on the other side with another male and her husbant stays on the initial side (false)
+# print(validate_transition([2,1,1,1,1], 3, 3))           # female wants to get on the other side with another male and her husbant stays on the initial side (false)
 # print(validate_transition([1,1,1,1,2], 1))              # female wants to get on the side where there is another male (false)
 sys.setrecursionlimit(5000)
-backtraking(get_initial_state(2), [], 1, 2)
+backtraking(get_initial_state(2), [], 1, 1)
 # print(hash_state([1, 2, 1, 2, 1]))
+# lista = [1, 1]
+# print(hash_state([1, 1]))
+# print(visited_state(lista, hash_state([1, 1])))
