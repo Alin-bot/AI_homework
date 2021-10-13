@@ -1,6 +1,5 @@
 import sys
 import hashlib
-from copy import deepcopy
 
 
 def get_initial_state(number_of_couples: int):
@@ -60,34 +59,25 @@ def validate_transition(state: list, person_1: int = -1, person_2: int = -1) -> 
 
 
 def backtraking(state, visited_states, i, j):
-    # ppl = []
-    # for k in range(1, len(state)):
-    #     if state[k] == state[0]:
-    #         ppl.append(k)
-    # ppl.append(-1)
-    # # print(ppl)
-
     if is_final_state(state):
-        print("salut")
+        print("Final state!")
+        print(visited_states)
         return True
     elif visited_state(state, visited_states):
+        # print("Not final")
         return False
     else:
-        # print(visited_states)
         visited_states.append(hash_state(state))
         for index_1 in range(1, len(state)):
             for index_2 in range(1, len(state)):
-                print(index_1, index_2)
-                state_2 = state.copy()
-                state_3 = state.copy()
-                if validate_transition(state_2, index_1, index_2) and not visited_state(state_2, visited_states):
+                # print(index_1, index_2)
+                state_copy = state.copy()
+                if validate_transition(state_copy, index_1, index_2) and not visited_state(state_copy, visited_states):
                     new_state = list(transition(state, index_1, index_2))
                     print(new_state)
                     backtraking(new_state, visited_states, index_1 , index_2)
-                    # index_1 = i
-                    # index_2 = j
-                    visited_states.append(hash_state(new_state))
-                    state = new_state.copy()
+                    if hash_state(new_state) in visited_states:
+                        visited_states.remove(hash_state(new_state)) # delete new_state from visited_states
 
 
 def hash_state(state):
@@ -108,49 +98,25 @@ def visited_state(state: list, visited_states) -> bool:
 def bkt_strategy(number_of_couples: int):
     state = get_initial_state(number_of_couples)
 
-    # id_couple = 1
-    # while not is_final_state(state):
-
-    #     id_couple = id_couple + 1
-    #     choose_function(state, id_couple)
-    #     if validate_transition(state):
-
-    #         state = transition(state)
-
-    return backtraking(state)
-    # else:
-    #     for i in ppl:
-    #         for j in ppl:
-    #             if validate_transition(state, i, j):
-    #                 backtraking(transition(state, i, j))
-    # if is_final_state(state):
-
-    #     return True
-    # elif not validate_transition(state):
-
-    #     return False
-    # else:
-    #     for i in range(1, len(state)):
-    #         for j in range(1, len(state)):
-    #             backtraking(transition(state, male_ =  , female_ = ))
+    return backtraking(state, [], 1, 1)
 
 
     # TESTING FUNCTIONS
 # print(get_initial_state(5))             # should print inistial state list
+
 # print(is_final_state([2, 1, 2, 2, 2]))  # should print False
 # print(is_final_state([2, 2, 2, 2]))     # should print False
 # print(is_final_state([2, 2, 2, 2, 2]))  # should print True
+
 # print(transition(get_initial_state(5), 2, 6))
 # print(transition(get_initial_state(5), 2, 1))
 # print(transition([1, 1, 2, 1, 1], 4, 1))
 # print(transition([2, 1, 2, 2, 2], 3))
+
 # print(validate_transition(get_initial_state(5), 2, 1))  # true
 # print(validate_transition([1,1,2,1,1], 4, 1))           # husband is on the future side and the female wants to get on the side with another male (true)
-# print(validate_transition([2,1,1,1,1], 3, 3))           # female wants to get on the other side with another male and her husbant stays on the initial side (false)
+# print(validate_transition([1,1,1,1,1], 1, 4))           # female wants to get on the other side with another male and her husbant stays on the initial side (false)
 # print(validate_transition([1,1,1,1,2], 1))              # female wants to get on the side where there is another male (false)
+
 sys.setrecursionlimit(5000)
-backtraking(get_initial_state(2), [], 1, 1)
-# print(hash_state([1, 2, 1, 2, 1]))
-# lista = [1, 1]
-# print(hash_state([1, 1]))
-# print(visited_state(lista, hash_state([1, 1])))
+bkt_strategy(2)
