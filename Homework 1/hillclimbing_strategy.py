@@ -36,8 +36,8 @@ def validate_new_state(old_state, new_state):
 
     difference = []
     for list1_i, list2_i in zip(old_state, new_state):
-        difference.append(list1_i-list2_i)
-    
+        difference.append(list1_i - list2_i)
+
     # The boat didn't move
     if difference[0] == 0:
         print("barca")
@@ -55,7 +55,7 @@ def validate_new_state(old_state, new_state):
     if difference.count(0) == len(difference):
         print("3")
         return False
-    
+
     count = 0
     if difference[0] != 0:
         for i in range(1, len(difference)):
@@ -72,7 +72,7 @@ def generate_random_state(n: int, old_state):
     state = []
     while not validate_new_state(old_state, state):
         state = []
-        for i in range(1, n*2+2):
+        for i in range(1, n * 2 + 2):
             state.append(random.choice([1, 2]))
     print(old_state)
     return state
@@ -88,11 +88,11 @@ def hillclimbing_strategy(state):
     score = 0
 
     while not local:
-        new_state = generate_random_state(int((len(state) - 1)/2), state)
+        new_state = generate_random_state(int((len(state) - 1) / 2), state)
         print(f"[75]: {new_state}")
         score = heuristic_function(new_state)
         while True:
-            candidate_state = generate_random_state(int((len(state) - 1)/2), state)
+            candidate_state = generate_random_state(int((len(state) - 1) / 2), state)
             if heuristic_function(candidate_state) > score:
                 new_state = candidate_state
                 print(f"[82]: {new_state}")
@@ -102,7 +102,6 @@ def hillclimbing_strategy(state):
         if heuristic_function(new_state) > best:
             best = heuristic_function(new_state)
             state = new_state
-
 
 
 # t := 0
