@@ -108,7 +108,6 @@ def bkt_strategy(number_of_couples: int):
 
     # TESTING FUNCTIONS
 
-
 # print(get_initial_state(5))             # should print inistial state list
 
 # print(is_final_state([2, 1, 2, 2, 2]))  # should print False
@@ -125,5 +124,5 @@ def bkt_strategy(number_of_couples: int):
 # print(validate_transition([1,1,1,1,1], 1, 4))           # female wants to get on the other side with another male and her husbant stays on the initial side (false)
 # print(validate_transition([1,1,1,1,2], 1))              # female wants to get on the side where there is another male (false)
 
-sys.setrecursionlimit(5000)
-bkt_strategy(2)
+# sys.setrecursionlimit(5000)
+# bkt_strategy(2)
