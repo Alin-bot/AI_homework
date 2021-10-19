@@ -10,8 +10,8 @@ def heuristic_function(state: list) -> int:
     return nr
 
 
-def check_wife_without_husband_and_not_single(state, wife_index):
-    if state[wife_index] == state[wife_index - 1]:
+def is_wife_without_husband_and_not_single(state, wife_index):
+    if state[wife_index] == state[wife_index + 1]:
         return False
     else:
         for i in range(2, len(state), 2):
@@ -20,12 +20,9 @@ def check_wife_without_husband_and_not_single(state, wife_index):
     return False
 
 
-def validate_state(state):
-    if state == []:
-        return False
-
+def validate_wifes(state):
     for i in range(1, len(state), 2):
-        if check_wife_without_husband_and_not_single(state, i):
+        if is_wife_without_husband_and_not_single(state, i):
             return False
     return True
 
@@ -41,64 +38,20 @@ def validate_new_state(old_state, new_state) -> bool:
     difference = []
     for list1, list2 in zip(old_state, new_state):
         difference.append(list1 - list2)
-
-    # if there are too many moves
-    if (difference.count(1) + difference.count(-1)) > 2:
-        return False
+    difference.pop(0) # remove the boat
 
     # if there are move from side 1 and 2
     if difference.count(1) == difference.count(-1):
         return False
 
-    # take the indexes of the moved persons
-    indexes = []
-    for i in range(1, len(difference)):
-        if difference[i] == 1 or difference[i] == -1:
-            indexes.append(i)
+    # if there are too many moves
+    if difference.count(1) > 2 or difference.count(-1) > 2:
+        return False
 
-    if not validate_transition(old_state, indexes[0], indexes[1]):
+    if not validate_wifes(new_state):
         return False
 
     return True
-
-
-
-
-
-
-
-    # difference = []
-    # for list1_i, list2_i in zip(old_state, new_state):
-    #     difference.append(list1_i-list2_i)
-    
-    # # The boat didn't move
-    # if difference[0] == 0:
-    #     print("barca")
-    #     return False
-
-    # for i in range(1, len(difference)):
-    #     if difference[i] != 0 and old_state[i] != old_state[0]:
-    #         print("1")
-    #         return False
-
-    # if len(difference) - difference.count(0) - 1 > 2:
-    #     print("2")
-    #     return False
-
-    # if difference.count(0) == len(difference):
-    #     print("3")
-    #     return False
-    
-    # count = 0
-    # if difference[0] != 0:
-    #     for i in range(1, len(difference)):
-    #         if difference[i] == 0:
-    #             count += 1
-    #     if count == len(difference) - 1:
-    #         print("4")
-    #         return False
-
-    # return True
 
 
 def generate_random_state(old_state) -> list:
@@ -108,7 +61,7 @@ def generate_random_state(old_state) -> list:
     # untill we have a valid new state
     while not validate_new_state(old_state, new_state):
         new_state = []
-        for i in range(1, number_of_couples*2+2):
+        for i in range(0, number_of_couples*2+1):
             new_state.append(random.choice([1, 2]))
 
     return new_state
@@ -118,13 +71,6 @@ def hillclimbing_strategy(state):
     if is_final_state(state):
         print("Final State!")
         return True
-
-    best = 0
-    score = 0
-
-    while best == MAX:
-        local = False
-        new_state = generate_random_state()
 
     best = 0
     local = False
@@ -147,7 +93,6 @@ def hillclimbing_strategy(state):
             state = new_state
 
 
-
 # t := 0
 # initialize best
 # repeat
@@ -164,3 +109,4 @@ def hillclimbing_strategy(state):
 #     if vc is better than best
 #     then best := vc
 # until t = MAX
+

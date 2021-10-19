@@ -16,6 +16,8 @@ from jealous_husbands import get_initial_state
 # print(validate_new_state(get_initial_state(2), [2, 2, 2, 1, 1])) # -> True
 # print(validate_new_state(get_initial_state(3), [1, 1, 2, 2, 2, 2, 1])) # -> False
 # print(validate_new_state(get_initial_state(2), [2, 1, 1, 1, 1])) # -> False
+# print(validate_new_state(get_initial_state(2), [1, 1, 1, 1, 1])) # -> False
+
 
 # hillclimbing_strategy(get_initial_state(3))
 
