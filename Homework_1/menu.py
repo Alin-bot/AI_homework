@@ -1,6 +1,6 @@
 from backtracking_strategy import bkt_strategy
 from hillclimbing_strategy import hillclimbing_strategy
-from a_star_strategy import a_star_strategy
+from astar_strategy import a_star_strategy
 from bfs_strategy import bfs_strategy
 
 strategies = {
