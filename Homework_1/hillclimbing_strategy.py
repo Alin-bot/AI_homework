@@ -67,27 +67,30 @@ def generate_random_state(old_state) -> list:
     return new_state
 
 
-def hillclimbing_strategy(state):
+def hillclimbing_strategy(number_of_couples: int):
+    state = get_initial_state(number_of_couples)
+    
     if is_final_state(state):
         print("Final State!")
         return True
 
     best = 0
     local = False
-    score = 0
 
     while not local:
         new_state = generate_random_state(state)
-        print(f"[75]: {new_state}")
+        print(f"[80]: {new_state}")
         score = heuristic_function(new_state)
+
         while True:
             candidate_state = generate_random_state(state)
             if heuristic_function(candidate_state) > score:
                 new_state = candidate_state
-                print(f"[82]: {new_state}")
+                print(f"[87]: {new_state}")
                 break
             else:
                 local = True
+
         if heuristic_function(new_state) > best:
             best = heuristic_function(new_state)
             state = new_state

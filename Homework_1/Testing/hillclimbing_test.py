@@ -4,7 +4,6 @@ sys.path.append(os.path.abspath("~/.."))
 from hillclimbing_strategy import *
 from jealous_husbands import get_initial_state
 
-# print(generate_random_state(3))
 # print(validate_state([]))
 # print(validate_state(get_initial_state(3))) # -> TRUE
 # print(validate_state([1, 2, 1, 2, 2])) # -> FALSE
@@ -19,6 +18,6 @@ from jealous_husbands import get_initial_state
 # print(validate_new_state(get_initial_state(2), [1, 1, 1, 1, 1])) # -> False
 
 
-# hillclimbing_strategy(get_initial_state(3))
+hillclimbing_strategy(3)
 
-print(generate_random_state(get_initial_state(3)))
+# print(generate_random_state(get_initial_state(3)))
