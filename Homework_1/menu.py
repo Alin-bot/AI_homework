@@ -9,11 +9,11 @@ strategies = {
     "3": {"function": hillclimbing_strategy},
     "4": {"function": a_star_strategy},
 }
-stop = False
-while not stop:
+
+while True:
     change_couples = False
     while not change_couples:
-        number_of_couples = input("Please enter the number of couples:")
+        number_of_couples = int(input("Please enter the number of couples:"))
         change_strategy = False
         while not change_strategy:
             print("Please choose a strategy from the following:")
@@ -22,7 +22,7 @@ while not stop:
             print("[3] Hillclimbing")
             print("[4] A-star")
             strategy_index = input()
-            strategies[strategy_index]["function"]()
+            strategies[strategy_index]["function"](number_of_couples)
             print("Change strategy? Type Y/N")
             if input() == "Y":
                 change_couples = False
