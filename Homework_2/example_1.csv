@@ -1,0 +1,4 @@
+country_id,neighbours,available_colors
+WA,"SA,NT","R"
+SA,"WA,NT","G,B"
+NT,"WA,SA","R,G,B"

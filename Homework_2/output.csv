@@ -1,0 +1,4 @@
+,country_id,neighbours,available_colors,chosen_color
+0,WA,"['SA', 'NT']",['G'],G
+1,SA,"['WA', 'NT']",['R'],R
+2,NT,"['WA', 'SA']",['B'],B

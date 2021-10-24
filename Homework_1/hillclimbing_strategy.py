@@ -87,7 +87,7 @@ def hillclimbing_strategy(number_of_couples: int):
             # print(heuristic_function(candidate_state))
             if heuristic_function(candidate_state) >= score:
                 new_state = candidate_state
-                print(f"[87]: {new_state}")
+                print(f"{new_state}")
                 break
             else:
                 local = True

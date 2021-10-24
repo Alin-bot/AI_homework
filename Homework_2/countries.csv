@@ -1,8 +1,0 @@
-country_id,neighbours,available_colors,chosen_color
-T,"V","R,G,B",None
-WA,"NT,SA","R",None
-NT,"WA,Q,SA","R,G,B",None
-SA,"WA,NT,Q,NSW,V","R,G,B",None
-Q,"NT,SA,NSW",G,None
-NSW,"Q,SA,V","R,G,B",None
-V,"SA,NSW,T","R,G,B",None
