@@ -5,16 +5,15 @@ import random
 
 
 def heuristic_function(df, country_id: str):
-    available_colors = df[df['country_id'] ==
-                          country_id]["available_colors"].values[0]
+    available_colors = df[df["country_id"] == country_id]["available_colors"].values[0]
     return len(available_colors)
 
 
 def compute_score_of_available_country(df):
-    df['score'] = None
+    df["score"] = None
     for index, row in df.iterrows():
-        if df.loc[index]['chosen_color'] is None:
-            df.loc[index]['score'] = heuristic_function(df, row['country_id'])
+        if df.loc[index]["chosen_color"] is None:
+            df.loc[index]["score"] = heuristic_function(df, row["country_id"])
     return df
 
 
@@ -32,9 +31,13 @@ def mrv(filename: str):
         first["chosen_color"] = chosen_color
         print(first["country_id"].values[0])
         for index, row in countries.iterrows():
-            if first["country_id"].values[0] in countries.loc[index]["neighbours"] and chosen_color in countries.loc[index]["available_colors"]:
+            if (
+                first["country_id"].values[0] in countries.loc[index]["neighbours"]
+                and chosen_color in countries.loc[index]["available_colors"]
+            ):
                 countries.loc[index]["available_colors"].remove(chosen_color)
         countries = compute_score_of_available_country(countries)
+    countries[["country_id", "neighbours", "chosen_color"]].to_csv("output.csv")
 
 
-mrv("example_2.csv")
+mrv("example_3.csv")

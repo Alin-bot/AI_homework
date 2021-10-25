@@ -1,4 +1,10 @@
-,country_id,neighbours,available_colors,chosen_color
-0,WA,"['SA', 'NT']",['G'],G
-1,SA,"['WA', 'NT']",['R'],R
-2,NT,"['WA', 'SA']",['B'],B
+,country_id,neighbours,chosen_color
+7,V,"['MS', 'WA', 'NSW', 'SA']",B
+4,WA,"['SA', 'NT', 'V']",G
+6,NSW,"['V', 'SA']",G
+3,NT,"['GB', 'WA']",B
+0,T,"['GB', 'PC']",R
+8,MS,"['NT', 'V']",R
+5,SA,"['WA', 'NSW', 'V']",R
+2,GB,"['T', 'PC', 'NT']",G
+1,PC,"['GB', 'T']",B

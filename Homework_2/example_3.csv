@@ -1,0 +1,10 @@
+country_id,neighbours,available_colors
+T,"GB,PC","R,G"
+PC,"GB,T",B
+GB,"T,PC,NT",G
+NT,"GB,WA","G,B"
+WA,"SA,NT,V","G,B,R"
+SA,"WA,NSW,V",R
+NSW,"V,SA","G,R"
+V,"MS,WA,NSW,SA","G,R,B"
+MS,"NT,V",R
