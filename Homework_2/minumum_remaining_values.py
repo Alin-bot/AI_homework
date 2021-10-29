@@ -4,12 +4,12 @@ from model import process_input
 import random
 
 
-def heuristic_function(df, country_id: str):
+def heuristic_function(df: pd.DataFrame, country_id: str):
     available_colors = df[df["country_id"] == country_id]["available_colors"].values[0]
     return len(available_colors)
 
 
-def compute_score_of_available_country(df):
+def compute_score_of_available_country(df: pd.DataFrame):
     df["score"] = None
     for index, row in df.iterrows():
         if df.loc[index]["chosen_color"] is None:
@@ -25,6 +25,8 @@ def mrv(filename: str):
         print(countries)
         first = countries.head(1)
         available_colors = first["available_colors"].values[0]
+        if available_colors == []:
+            raise Exception("There are no colors left!")
         print(available_colors)
         chosen_color = random.choice(available_colors)
         print(chosen_color)
