@@ -1,5 +1,6 @@
 import random
 import itertools
+from typing import final
 
 
 def get_initial_color_list(n: int, m: int) -> list:
@@ -53,49 +54,52 @@ def play_game(initial_state: list, n: int, m: int):
                 break
 
 
-# play_game(get_initial_color_list(3, 3, 4), 3, 3)
-
-
 def minimax_alphabeta(
-    initial_state, depth: int, state: list, alpha, beta, turn, n, m, k, count
+    initial_state, depth: int, state: list, player, alpha, beta, turn, n, m, k
 ):
     balls = get_initial_color_list(n, m)
-    print(balls)
-    print(initial_state)
+    neighbours = list(dict.fromkeys(list(itertools.permutations(balls, k))))
     if is_final_state(state, initial_state, turn, n) != False or depth == 0:
         return compare_sequences(state, initial_state)
     else:
-        print(list(itertools.permutations(balls, k)))
-        for choice in list(itertools.permutations(balls, k)):
+        for choice in neighbours:
             choice = list(choice)
+            if choice == initial_state:
+                print(f"Player A's choice: {initial_state}")
+                print(
+                    f"Solution found: {choice} at index {neighbours.index(tuple(choice))}"
+                )
+                break
             score = minimax_alphabeta(
                 initial_state,
                 depth - 1,
                 choice,
+                "B",
                 alpha,
                 beta,
                 turn + 1,
                 n,
                 m,
                 k,
-                count + 1,
             )
-            if score >= beta:
-                print(count)
-                return beta
-            if score > alpha:
-                alpha = score
+            if player == "A":
+                pass
+            else:
+                if score <= alpha:
+                    return alpha
+                if score < beta:
+                    beta = score
 
 
 minimax_alphabeta(
-    choose_goal_list(2, get_initial_color_list(2, 3)),
+    choose_goal_list(3, get_initial_color_list(3, 3)),
     2,
     [],
+    "A",
     -1000,
     -1000,
     0,
-    2,
     3,
-    2,
-    0,
+    3,
+    3,
 )
