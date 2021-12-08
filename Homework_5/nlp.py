@@ -77,11 +77,12 @@ def exercise_4():
         for word in parsed_sentence:
             if word[1] in NOUNS:
                 if search_concept_in_ontology(word_lemmatizer.lemmatize(word[0])):
-                    lematized.write(word[0] + " ")
+                    lematized.write(sentence)
+                    break
     print("Done")
     lematized.close()
 
 
-# exercise_2()
+exercise_2()
 # exercise_3()
-exercise_4()
+# exercise_4()
