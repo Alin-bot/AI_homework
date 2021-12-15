@@ -54,7 +54,7 @@ def action(matrix, move: tuple):
         if matrix[agent[0] + move[0], agent[1] + move[1]] == -999:
             print("You lost!")
             return 0
-        elif matrix[agent[0] + move[0], agent[1] + move[1]] == 999:
+        elif agent[0] + move[0] == len(matrix) and agent[1] + move[1] == len(matrix):
             print("You won!")
             return 1
 
@@ -67,11 +67,34 @@ def action(matrix, move: tuple):
 
 def get_next_action(Q, agent: tuple, epsilon):
     if np.random.random() < epsilon:
-        max_value = np.argmax(Q[agent[0], agent[1]])
-        location = np.where(Q == max_value)
-        row = location[0][0]
-        col = location[1][0]
-        return (row, col)
+        if validate_action(Q, (0, -1), agent):
+            left = Q[agent[0], agent[1] - 1]
+        else:
+            left = -1000
+        if validate_action(Q, (0, 1), agent):
+            right = Q[agent[0], agent[1] + 1]
+        else:
+            right = -1000
+        if validate_action(Q, (-1, 0), agent):
+            up = Q[agent[0] - 1, agent[1]]
+        else:
+            up = -1000
+        if validate_action(Q, (1, 0), agent):
+            down = Q[agent[0] + 1, agent[1]]
+        else:
+            down = -1000
+
+        max_value = np.argmax([right, down, left, up])
+        
+        max_value += 1
+        if max_value == 1:
+            return (0, 1)
+        if max_value == 2:
+            return (1, 0)
+        if max_value == 3:
+            return (0, -1)
+        if max_value == 4:
+            return (-1, 0)
     else:
         random_move = np.random.randint(4)
         if random_move == 1:
@@ -94,30 +117,53 @@ def Q_learning():
     rewards[0, 0] = 0
     rewards[n-1, n-1] = 999
 
+    q_values = np.zeros((n, n, 4))
+    
+
     for episode in range(100):
         Q = initialize_environment(n, ice)
 
         move = get_next_action(Q, find_agent(Q), epsilon)
         print(move)
-        print(Q)
+        print(Q, '\n')
         while not action(Q, move):
 
-            print(Q)
-            agent_location = find_agent(Q)
-            reward = rewards[agent_location[0], agent_location[1]]
+            print(Q, '\n')
+            agent = find_agent(Q)
+            reward = rewards[agent[0], agent[1]]
             
-            move[0] -= agent_location[0]
-            move[1] -= agent_location[1]
+            old_row_index = move[0] - agent[0]
+            old_column_index = move[1] - agent[1]
 
-            old_q_value = Q[move[0], move[1]]
-            temporal_difference = reward + (discount_factor * np.max(Q[agent_location[0], agent_location[1]])) - old_q_value
+            old_q_value = Q[old_row_index, old_column_index]
+            
+            if validate_action(Q, (0, -1), agent):
+                left = Q[agent[0], agent[1] - 1]
+            else:
+                left = -1000
+            if validate_action(Q, (0, 1), agent):
+                right = Q[agent[0], agent[1] + 1]
+            else:
+                right = -1000
+            if validate_action(Q, (-1, 0), agent):
+                up = Q[agent[0] - 1, agent[1]]
+            else:
+                up = -1000
+            if validate_action(Q, (1, 0), agent):
+                down = Q[agent[0] + 1, agent[1]]
+            else:
+                down = -1000
+
+            temporal_difference = reward + (discount_factor * np.max([left, down, up, right])) - old_q_value
 
             new_q_value = old_q_value + (learning_rate * temporal_difference)
-            Q[move[0], move[1]] = new_q_value
+            Q[old_row_index, old_column_index] = new_q_value
 
             move = get_next_action(Q, find_agent(Q), epsilon)
     
     print('Training compltete!')
 
+# Q = initialize_environment(4,3)
+# print(get_next_action(Q, (0,0), 0.9))
 
 Q_learning()
